@@ -196,6 +196,7 @@ if( $baserow->delete("Contacts", $deleteContactID ) ) {
 Any time an API operation fails, you can access the reason for the failure using the `error()` function. 
 ```php
 $error = $baserow->error();
+print_r( $error );
 ```
 
 
