@@ -21,7 +21,7 @@ For more information about the Baserow API, please see:
 
 If you're using Composer, you can run the following command:
 ```
-composer require stevecomrie/baserow-php
+composer require "stevecomrie/baserow-php:main-dev"
 ```
 You can also download the src files directly and extract them to your web directory.
 
