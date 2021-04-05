@@ -1,0 +1,25 @@
+{
+    "name": "stevecomrie/baserow-php",
+    "description": "A PHP Client for the Baserow.io API",
+    "version": "0.0.1",
+    "keywords": ["baserow", "php", "api"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Comrie",
+            "email": "stevecomrie@gmail.com"
+        }
+    ],
+    "type": "library",
+    "require": {
+		"php": ">=7.1"
+    },
+    "require-dev": {
+		
+    },
+    "autoload": {
+        "psr-4": {
+            "Scomrie\\Baserow\\": "src/"
+        }
+    }
+}
