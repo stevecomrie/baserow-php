@@ -49,15 +49,15 @@ use \Scomrie\Baserow\Baserow;
 $baserow = new Baserow([
     'api_key' => 'API_KEY', // REQUIRED!!
 
-	// if you are self hosting your own instance of Baserow, use this parameter to
-	// point to the proper location on your server. defaults to the SaaS hosted endpoint.
+    // if you are self hosting your own instance of Baserow, use this parameter to
+    // point to the proper location on your server. defaults to the SaaS hosted endpoint.
     'api_url' => 'https://api.baserow.io/api/database/rows/table'
 
-	// if set to true, will dump any errors with print_r() and exit on failure
-	'debug' => false,
+    // if set to true, will dump any errors with print_r() and exit on failure
+    'debug' => false,
 
-	// map of all tables & fields from auto-generated ###'s to human readable names
-	'table_map' => []
+    // map of all tables & fields from auto-generated ###'s to human readable names
+    'table_map' => []
 ]);
 ```
 
