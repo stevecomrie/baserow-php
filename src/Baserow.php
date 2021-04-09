@@ -9,6 +9,8 @@ namespace Scomrie\Baserow;
  * @version 0.0.1
  */
 
+use Exception;
+
 
 class Baserow
 {
@@ -20,7 +22,10 @@ class Baserow
     protected $tableFieldsByName = [];
     protected $tableFieldsById   = [];
 
-	public function __construct($config)
+    const DEFAULT_LIST_SIZE = 100;
+    const MAXIMUM_LIST_SIZE = 200;
+
+	public function __construct($config=null)
     {
         if (is_array($config)) {
 
@@ -37,17 +42,17 @@ class Baserow
             $this->setDebug($config['debug']);
 
         } else {
-            echo 'Error: __construct() - Configuration data is missing';
+            throw new Exception("__construct() - Configuration data is missing");
         }
     }
 
-    public function setKey($key)
+    public function setKey($key=null)
     {
         if( empty($key) ) {
-            echo 'Error: setKey() - API key is missing';
+            throw new Exception("API key cannot be blank");
         }
         
-        $this->_key = $key;
+        $this->_key = strval( $key );
     }
 
     public function getKey()
@@ -55,24 +60,41 @@ class Baserow
         return $this->_key;
     }
 
-    public function setDebug($debug)
+    public function setDebug($debug=true)
+    {
+        $this->_debug = boolval( $debug );
+    }
+
+    public function getDebug()
     {
         $this->_debug = $debug;
     }
 
-    public function setApiUrl($url)
+    public function setApiUrl($url=null)
     {
-        $this->_apiurl = rtrim($url, '/');
+        if( empty($url) ) {
+            throw new Exception("API url cannot be blank");
+        }
+
+        $this->_apiurl = rtrim( strval($url), '/');
     }
 
-    public function getApiUrl($request)
+    public function getApiUrl($request="")
     {
-	    $request = str_replace( ' ', '%20', $request );
+        if( empty($request) ) {
+            throw new Exception("API request URL cannot be blank");
+        }
+
+        $request = str_replace( ' ', '%20', strval($request) );
         return $this->_apiurl.'/'.$request;
     }
 
-    public function setTableMap($map)
+    public function setTableMap($map=[])
     {
+        if( !is_array($map) ) {
+            throw new Exception("Table Map must be an array");
+        }
+
         if( empty($map) ) {
             return;
         }
@@ -120,7 +142,7 @@ class Baserow
         $params = $this->_mapParams($params, $table);
 
         $page = empty( $params['page'] ) ? 1   : $params['page'];
-        $size = empty( $params['size'] ) ? 100 : $params['size'];
+        $size = empty( $params['size'] ) ? self::DEFAULT_LIST_SIZE : $params['size'];
 
         $request  = new Request( $this, $table, $params, false );
         $response = $request->getResponse();
@@ -148,7 +170,7 @@ class Baserow
         $table  = $this->_tableID($table);
         $params = $this->_mapParams($params, $table);
 
-        $params['size'] = 200; // override the default to get more results per request
+        $params['size'] = self::MAXIMUM_LIST_SIZE; // override the default to get more results per request
         $params['page'] = 0;
 
         $request = new Request( $this, $table, $params, false );
