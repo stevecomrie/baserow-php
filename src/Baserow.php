@@ -68,6 +68,11 @@ class Baserow
     public function getApiUrl($request)
     {
 	    $request = str_replace( ' ', '%20', $request );
+
+        // crude proof of concept hack to allow duplicate query param keys with multiple values
+        // ideal solution: https://stackoverflow.com/questions/17161114/php-http-build-query-with-two-array-keys-that-are-same
+        $request = preg_replace( '/\%5B\d+\%5D\=/', '=', $request );
+
         return $this->_apiurl.'/'.$request;
     }
 
