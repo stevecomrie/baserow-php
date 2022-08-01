@@ -51,7 +51,7 @@ $baserow = new Baserow([
 
     // if you are self hosting your own instance of Baserow, use this parameter to
     // point to the proper location on your server. defaults to the SaaS hosted endpoint.
-    'api_url' => 'https://api.baserow.io/api/database/rows/table'
+    'api_url' => 'https://api.baserow.io/api/database/rows/table',
 
     // if set to true, will dump any errors with print_r() and exit on failure
     'debug' => false,
