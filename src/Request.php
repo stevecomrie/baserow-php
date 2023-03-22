@@ -99,7 +99,21 @@ class Request
 
             if( ! $url_encoded )
             {
-                curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($this->data));
+                // make sure any straight integer values in the data array
+                // are reformatted using (int) which prevents json_encode() from
+                // wrapping them in quotes, since baserow interprets integers
+                // wrapped in quotes as strings, which breaks updating select
+                // fields by option id. this is a preferable method to using
+                // JSON_NUMERIC_CHECK as there are some legacy issues with the
+                // way that flag tests and validates numbers
+                $jsonData = $this->data;
+                foreach( $jsonData AS $key => $value ) { 
+                    if( is_numeric($value) && preg_match("/^\d+$/", $value ) ) {
+                        $jsonData[$key] = (int) $value;
+                    }
+                }
+
+                curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($jsonData));
             }
         }
 

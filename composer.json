@@ -1,7 +1,7 @@
 {
     "name": "stevecomrie/baserow-php",
     "description": "A PHP Client for the Baserow.io API",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "keywords": ["baserow", "php", "api"],
     "license": "MIT",
     "authors": [
