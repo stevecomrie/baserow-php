@@ -111,6 +111,18 @@ class Request
                     if( is_numeric($value) && preg_match("/^\d+$/", $value ) ) {
                         $jsonData[$key] = (int) $value;
                     }
+
+                    if( is_array($value) && !empty($value) ) {
+                        $cleanValues = [];
+                        foreach( $value AS $arrayVal ) {
+                            $cleanValues[] =
+                                ( is_numeric($arrayVal) && preg_match("/^\d+$/", $arrayVal ) )
+                                ? (int) $arrayVal
+                                : $arrayVal;
+                            }
+                        }
+                        $jsonData[$key] = $cleanValues;
+                    }
                 }
 
                 curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($jsonData));
