@@ -120,8 +120,9 @@ class Request
                                 ? (int) $arrayVal
                                 : $arrayVal;
                         }
+
+                        $jsonData[$key] = empty($cleanValues) ? $value : $cleanValues;
                     }
-                    $jsonData[$key] = $cleanValues;
                 }
             }
 
