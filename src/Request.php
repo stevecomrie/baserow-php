@@ -81,23 +81,17 @@ class Request
 
         if( $this->is_post )
         {
-
-            $url_encoded = false;
-
-            if( strtolower( $this->is_post ) == 'patch' )
-            {
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
-            }
-            else if( strtolower( $this->is_post ) == 'delete' )
-            {
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-
-                $url_encoded = true;
-            }
+            $postData = [];
+            $postType = strtoupper( $this->is_post );
 
             curl_setopt($curl,CURLOPT_POST, true);
 
-            if( ! $url_encoded )
+            if( in_array( $postType, ['PATCH', 'DELETE'] ) ) {
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $postType );
+            }
+
+            // POST & PATCH send a payload that needs to be modified
+            if( $postType != 'DELETE' )
             {
                 // make sure any straight integer values in the data array
                 // are reformatted using (int) which prevents json_encode() from
@@ -106,10 +100,10 @@ class Request
                 // fields by option id. this is a preferable method to using
                 // JSON_NUMERIC_CHECK as there are some legacy issues with the
                 // way that flag tests and validates numbers
-                $jsonData = $this->data;
-                foreach( $jsonData AS $key => $value ) { 
+                $postData = $this->data;
+                foreach( $postData AS $key => $value ) {
                     if( is_numeric($value) && preg_match("/^\d+$/", $value ) ) {
-                        $jsonData[$key] = (int) $value;
+                        $postData[$key] = (int) $value;
                     }
 
                     if( is_array($value) && !empty($value) ) {
@@ -121,12 +115,12 @@ class Request
                                 : $arrayVal;
                         }
 
-                        $jsonData[$key] = empty($cleanValues) ? $value : $cleanValues;
+                        $postData[$key] = empty($cleanValues) ? $value : $cleanValues;
                     }
                 }
             }
 
-            curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($jsonData));
+            curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($postData));
         }
 
         $this->curl = $curl;

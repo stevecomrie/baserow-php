@@ -1,5 +1,12 @@
 # stevecomrie/baserow-php Change Log
 
+## 0.0.7 - 2023.04.27
+
+### Fixed
+
+* Fixed a bug that was preventing delete operations from working after the `0.0.3` update ([#3](https://github.com/stevecomrie/baserow-php/issues/3)). Thanks to [@bernetflorent](https://github.com/bernetflorent) for identifying the issue and the fix.
+
+
 ## 0.0.6 - 2023.03.24
 
 ### Fixed
